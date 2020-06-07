@@ -122,7 +122,6 @@ public class showCaptionBoard extends AppCompatActivity {
 
                 YouTubeThumbnailView thumbnailView = (YouTubeThumbnailView) v.findViewById(R.id.video_thumbnail_image_view);
                 Button button = (Button)v.findViewById(R.id.checkButton);
-                EditText wholeUrl = (EditText)v.findViewById(R.id.link);
                 TextView language = (TextView)v.findViewById(R.id.language);
                 TextView resultPay = (TextView)v.findViewById(R.id.pay);
 
@@ -166,7 +165,6 @@ public class showCaptionBoard extends AppCompatActivity {
                 if (p.getStatus() == 2) button.setText("접수 완료");
                 else if (p.getStatus() == 3) button.setText("자막 등록 완료");
 
-                wholeUrl.setText(p.getUrl());
                 language.setText(p.getLanguage());
                 resultPay.setText(""+p.getPay());
             }
@@ -192,7 +190,6 @@ public class showCaptionBoard extends AppCompatActivity {
         public String getUrl() {
             return url;
         }
-
         public int getStatus() {
             return status;
         }
