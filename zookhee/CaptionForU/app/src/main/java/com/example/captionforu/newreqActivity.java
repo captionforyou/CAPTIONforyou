@@ -129,6 +129,8 @@ public class newreqActivity extends AppCompatActivity {
         else
         {
             mDbHelper.insertNewSubBoard(ID,NN,youtubelink.getText().toString(),selectedlanguage,selectedcontents,Integer.parseInt(newpay.getText().toString()));
+            //((CaptionBoard) getSupportFragmentManager().findFragmentByTag("captionboard")).createList();
+            setResult(RESULT_OK);
             finish();
         }
         mDbHelper.close();

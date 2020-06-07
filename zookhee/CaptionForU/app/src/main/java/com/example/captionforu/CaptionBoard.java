@@ -1,5 +1,6 @@
 package com.example.captionforu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,27 +23,28 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-    public class CaptionBoard extends Fragment  {
+import static android.app.Activity.RESULT_OK;
+
+public class CaptionBoard extends Fragment  {
         public List<SubBoard> boardList;
         ImageButton newreqButton ;
         ImageButton refButton ;
         Integer chk;
         String ID;
         String NN;
-
+        View rootview;
 
         //YouTubePlayer.OnInitializedListener listener;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootview= inflater.inflate(R.layout.fragment_captionboard, container, false);
+        rootview= inflater.inflate(R.layout.fragment_captionboard, container, false);
         Bundle bundle = this.getArguments();
 
         if (bundle != null) {
             ID = bundle.getString("ID");
             NN = bundle.getString("NN");
         }
-
         newreqButton = (ImageButton)rootview.findViewById(R.id.newreqbutton);
         newreqButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,21 +52,31 @@ import java.util.List;
                 Intent intent = new Intent(getActivity(),newreqActivity.class);
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
-                startActivity(intent);
+                startActivityForResult(intent,0);
+                createList();
             }
         });
         refButton = (ImageButton)rootview.findViewById(R.id.refreshbutton);
         refButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createList(rootview);
+                createList();
             }
         });
 
-        createList(rootview);
+        createList();
         return rootview;
         }
-        public void  createList(View rootview) {
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode ==0) {
+                if (resultCode == RESULT_OK) {
+                    createList();
+                }
+            }
+        }
+        public void  createList() {
             ScrollView scroll = (ScrollView) rootview.findViewById(R.id.scroll);
             LinearLayout list = (LinearLayout) scroll.findViewById(R.id.list);
             DataAdapter mDbHelper = new DataAdapter(getActivity());
@@ -97,11 +109,5 @@ import java.util.List;
                 list.addView(newlist);
             }
         }
-
-        public void addList(){
-
-        }
-
-
 
     }
