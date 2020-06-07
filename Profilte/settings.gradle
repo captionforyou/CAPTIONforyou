@@ -1,0 +1,2 @@
+rootProject.name='Profilte'
+include ':app'
