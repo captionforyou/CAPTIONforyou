@@ -38,11 +38,16 @@ public class showCaptionBoard extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    private static String DB_PATH = "/data/data/com.example.profilte/databases/";
-    private static String DB_NAME = "CaptionForYou";
+    // TODO : assets 폴더에 있는 경우 "", 그 외 경로기입
+    private static String DB_PATH = "";
+    // TODO : assets 폴더에 있는 DB명 또는 별도의 데이터베이스 파일이름
+    private static String DB_NAME ="CaptionForYou.db";
     private SQLiteDatabase profiledb;
     private static final String TAG = "showCaptionBoard";
+
     int cursorCount =0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,13 @@ public class showCaptionBoard extends AppCompatActivity {
         Intent intent = getIntent(); /*데이터 수신*/
         String command = intent.getExtras().getString("command"); /*String형*/
         //만약에 command가 request 이면..working이면..
+        //ProfileDatabaseManager databaseManager = ProfileDatabaseManager.getInstance(this);
 
-        profiledb=SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+
+        DataBaseAdapter mDbHelper = new DataBaseAdapter(this);
+        mDbHelper.createDatabase();
+        profiledb = mDbHelper.open();
+
         String SQL = null;
 
         if(command.equals("requestBoard")){
@@ -78,8 +88,8 @@ public class showCaptionBoard extends AppCompatActivity {
         {
             while (profile.moveToNext())
             {
-                menu m = new menu(profile.getString(1), profile.getInt(2),profile.getString(4),
-                        profile.getString(3), profile.getInt(7));
+                menu m = new menu(profile.getString(1), profile.getInt(2),profile.getString(5)
+                        , profile.getInt(7));
                 m_orders.add(m);
                 i++;
             }
@@ -113,8 +123,7 @@ public class showCaptionBoard extends AppCompatActivity {
                 YouTubeThumbnailView thumbnailView = (YouTubeThumbnailView) v.findViewById(R.id.video_thumbnail_image_view);
                 Button button = (Button)v.findViewById(R.id.checkButton);
                 EditText wholeUrl = (EditText)v.findViewById(R.id.link);
-                TextView requesterNickname = (TextView)v.findViewById(R.id.requestNickName);
-                TextView registerNickname = (TextView)v.findViewById(R.id.registerNickName);
+                TextView language = (TextView)v.findViewById(R.id.language);
                 TextView resultPay = (TextView)v.findViewById(R.id.pay);
 
                 final String urlYouTube = p.getUrl().substring(p.getUrl().indexOf("=")+1);
@@ -158,8 +167,7 @@ public class showCaptionBoard extends AppCompatActivity {
                 else if (p.getStatus() == 3) button.setText("자막 등록 완료");
 
                 wholeUrl.setText(p.getUrl());
-                requesterNickname.setText(p.getRequester());
-                registerNickname.setText(p.getRegister());
+                language.setText(p.getLanguage());
                 resultPay.setText(""+p.getPay());
             }
             return v;
@@ -171,15 +179,13 @@ public class showCaptionBoard extends AppCompatActivity {
 
         private String url;
         private int status;
-        private String requester;
-        private String register;
+        private String language;
         private int pay;
 
-        public menu(String _url, int _status, String _requester, String _register, int _pay){
+        public menu(String _url, int _status, String _language, int _pay){
             this.url = _url;
             this.status = _status;
-            this.requester = _requester;
-            this.register = _register;
+            this.language = _language;
             this.pay = _pay;
         }
 
@@ -190,12 +196,7 @@ public class showCaptionBoard extends AppCompatActivity {
         public int getStatus() {
             return status;
         }
-        public String getRequester(){
-            return requester;
-        }
-        public String getRegister(){
-            return register;
-        }
+        public String getLanguage() {return language;}
         public int getPay(){
             return pay;
         }
