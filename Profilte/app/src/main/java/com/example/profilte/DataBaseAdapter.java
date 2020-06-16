@@ -36,6 +36,20 @@ public class DataBaseAdapter {
         return this;
     }
 
+    public DataBaseAdapter getDatabase()throws SQLException
+    {
+        try
+        {
+            mDbHelper.getDataBase();
+        }
+        catch (IOException mIOException)
+        {
+            Log.e(TAG, mIOException.toString() + "  UnableToGetDatabase");
+            throw new Error("UnableToGetDatabase");
+        }
+        return this;
+
+    }
     public SQLiteDatabase open() throws SQLException
     {
         try
@@ -47,6 +61,20 @@ public class DataBaseAdapter {
         catch (SQLException mSQLException)
         {
             Log.e(TAG, "open >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+        return mDb;
+    }
+
+    public SQLiteDatabase write() throws SQLException
+    {
+        try
+        {
+            mDb = mDbHelper.getWritableDatabase();
+
+        }catch (SQLException mSQLException)
+        {
+            Log.e(TAG, "write >>"+ mSQLException.toString());
             throw mSQLException;
         }
         return mDb;

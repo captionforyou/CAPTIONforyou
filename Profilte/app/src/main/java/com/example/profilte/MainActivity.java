@@ -50,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(activityIntent);
     }
 
-    // TODO : assets 폴더에 있는 경우 "", 그 외 경로기입
-    private static String DB_PATH = "";
-    // TODO : assets 폴더에 있는 DB명 또는 별도의 데이터베이스 파일이름
-    private static String DB_NAME ="CaptionForYou.db";
-
+    public void clickgoToNotice(View view){
+        Intent activityIntent = new Intent(this, noticeActivity.class);
+        startActivity(activityIntent);
+    }
 
     private boolean openDatabase() {
 //        sampleDB =  SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
@@ -74,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
         profile.moveToFirst();
 
             String id = "sooyoung";
-            String nickname = profile.getString(4);
-            int points = profile.getInt(5);
-            int money = profile.getInt(6);
-            int requestNum = profile.getInt(7);
-            int registerNum = profile.getInt(8);
-            int ratingCom = profile.getInt(9);
-            int ratingCl = profile.getInt(10);
-            int ratingT = profile.getInt(11);
+            String nickname = profile.getString(3);
+            int points = profile.getInt(4);
+            int money = profile.getInt(5);
+            int requestNum = profile.getInt(6);
+            int registerNum = profile.getInt(7);
+            int ratingCom = profile.getInt(8);
+            int ratingCl = profile.getInt(9);
+            int ratingT = profile.getInt(10);
 
         Intent intent = new Intent() ;
 
