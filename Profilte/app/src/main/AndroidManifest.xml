@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".showCaptionBoard"></activity>
+        <activity android:name=".noticeActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 팝업 Activity -->
+        <activity android:name=".AskingConfirmPopUp" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".noticePopUp" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".RatePopUp" android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

@@ -233,9 +233,28 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="OnClick" />
 
+    <Button
+        android:id="@+id/goToNotice"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+
+        android:layout_marginStart="280dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="580dp"
+        android:background="#FFFF4081"
+        android:onClick="clickgoToNotice"
+
+        android:text="임의알림"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="OnClick" />
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="409dp"
-        android:layout_height="100dp"
+        android:layout_height="40dp"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="627dp"

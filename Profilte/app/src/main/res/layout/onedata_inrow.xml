@@ -21,11 +21,10 @@
 
         <com.google.android.youtube.player.YouTubeThumbnailView
             android:id="@+id/video_thumbnail_image_view"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"
             android:scaleType="centerCrop" />
-
 
         <Button
             android:id="@+id/checkButton"
@@ -55,7 +54,6 @@
             android:layout_marginLeft="130dp"
             android:layout_marginTop="70dp"
             android:text="pay" />
-
 
         <TextView
             android:id="@+id/language"
