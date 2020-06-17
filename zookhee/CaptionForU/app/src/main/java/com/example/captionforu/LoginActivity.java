@@ -105,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(userList.get(i).password.equals((password)))
                 {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("no",userList.get(i).no.toString());
                     intent.putExtra("ID",userList.get(i).id);
                     intent.putExtra("NN",userList.get(i).nickname);
                     startActivity(intent);

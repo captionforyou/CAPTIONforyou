@@ -15,5 +15,22 @@
         <item>노래/음악</item>
         <item>요리</item>
     </string-array>
+    <string-array name="cblang_array">
+        <item>모든 언어</item>
+        <item>한국어</item>
+        <item>영어</item>
+        <item>중국어</item>
+        <item>일본어</item>
+        <item>독일어</item>
+        <item>스페인어</item>
+    </string-array>
+    <string-array name="cbcontents_array">
+        <item>모든 컨텐츠</item>
+        <item>예능</item>
+        <item>다큐</item>
+        <item>게임</item>
+        <item>노래/음악</item>
+        <item>요리</item>
+    </string-array>
 </resources>
 

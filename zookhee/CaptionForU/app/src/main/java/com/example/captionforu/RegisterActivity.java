@@ -94,6 +94,7 @@ public class RegisterActivity extends Activity {
             userinfo.setratingClarity(0);
             userinfo.setratingTime(0);
             userinfo.setnoticeCnt(0);
+            userinfo.setratingCnt(0);
             RetrofitConnection retrofitConnection = new RetrofitConnection();
             Call<UserInfo> postcall =  retrofitConnection.server.post_Userinfo("json",userinfo);
             postcall.enqueue(new Callback<UserInfo>() {

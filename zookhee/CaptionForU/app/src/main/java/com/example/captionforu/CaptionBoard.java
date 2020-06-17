@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +38,10 @@ public class CaptionBoard extends Fragment  {
         Integer chk;
         String ID;
         String NN;
+        String NO;
         View rootview;
+        String selectedlanguage;
+        String selectedcontents;
 
         //YouTubePlayer.OnInitializedListener listener;
     @Nullable
@@ -48,6 +53,7 @@ public class CaptionBoard extends Fragment  {
         if (bundle != null) {
             ID = bundle.getString("ID");
             NN = bundle.getString("NN");
+            NO = bundle.getString("NO");
         }
         newreqButton = (ImageButton)rootview.findViewById(R.id.newreqbutton);
         newreqButton.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +75,35 @@ public class CaptionBoard extends Fragment  {
             }
         });
         createList();
+
+        Spinner cblangspinner=(Spinner)rootview.findViewById(R.id.cblanguagespinner);
+        cblangspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedlanguage=parent.getItemAtPosition(position).toString();
+                createList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedlanguage=parent.getItemAtPosition(0).toString();
+            }
+        });
+        Spinner cbcontentspinner=(Spinner)rootview.findViewById(R.id.cbcontentsspinner);
+        cbcontentspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedcontents=parent.getItemAtPosition(position).toString();
+                createList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedcontents=parent.getItemAtPosition(0).toString();
+            }
+        });
+
+
         return rootview;
         }
         @Override
@@ -94,6 +129,8 @@ public class CaptionBoard extends Fragment  {
                         Log.e("succ","게시판 db 불러오기 성공");
                         boardList=response.body();
                         for (int i = 0; i < boardList.size(); i++) {
+                            if(!selectedlanguage.equals("모든 언어") && !selectedlanguage.equals(boardList.get(i).getlanguage())) continue;
+                            if(!selectedcontents.equals("모든 컨텐츠") && !selectedcontents.equals(boardList.get(i).getcontents())) continue;
                             LinearLayout newlist = (LinearLayout) View.inflate(getActivity()  , R.layout.captionboardlayout, null);
                             final String link = boardList.get(i).link.toString();
                             ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);
@@ -118,6 +155,9 @@ public class CaptionBoard extends Fragment  {
                                 public void onClick(View v){
                                     Intent intent = new Intent(getActivity(), subBoardPopupActivity.class);
                                     intent.putExtra("Cookie",boardList.get(temp).no.toString());
+                                    intent.putExtra("ID",ID);
+                                    intent.putExtra("NN",NN);
+                                    intent.putExtra("NO",NO);
                                     startActivity(intent);
                                 }
                             });;

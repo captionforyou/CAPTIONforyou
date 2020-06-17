@@ -36,6 +36,9 @@ public class UserInfo {
     @SerializedName("ratingtime")
     public Integer ratingTime;
 
+    @SerializedName("ratingcnt")
+    public Integer ratingCnt;
+
     @SerializedName("noticecnt")
     public Integer noticeCnt;
 
@@ -77,11 +80,9 @@ public class UserInfo {
     public Integer getmoney() {
         return money;
     }
-    public void setmoney(Integer money) {
-        this.money=money;
-    }
+    public void setmoney(Integer money) { this.money=money; }
 
-    public Integer gerequestNum() {
+    public Integer getrequestNum() {
         return requestNum;
     }
     public void setrequestNum(Integer requestNum) {
@@ -110,6 +111,13 @@ public class UserInfo {
     }
     public void setratingTime(Integer ratingTime) {
         this.ratingTime=ratingTime;
+    }
+
+    public Integer getratingCnt() {
+        return ratingCnt;
+    }
+    public void setratingCnt(Integer ratingCnt) {
+        this.ratingCnt=ratingCnt;
     }
 
     public Integer getnoticeCnt() {

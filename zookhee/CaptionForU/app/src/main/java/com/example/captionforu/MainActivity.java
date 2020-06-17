@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -34,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final String ID = getIntent().getStringExtra("ID");
         final String NN = getIntent().getStringExtra("NN");
+        final String NO = getIntent().getStringExtra("no");
         Bundle Bundle=new Bundle(2);
         Bundle.putString("ID",ID);
         Bundle.putString("NN",NN);
+        Bundle.putString("NO",NO);
         captionboard.setArguments(Bundle);
+        profile.setArguments(Bundle);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         // 첫 화면 지정

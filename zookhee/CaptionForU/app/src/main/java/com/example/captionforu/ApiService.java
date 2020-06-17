@@ -6,7 +6,9 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -29,6 +31,9 @@ public interface ApiService {
 
     @POST("subboards/")
     Call<SubBoard> post_SubBoard(@Query("format") String json, @Body SubBoard subboard);
+
+    @PATCH("subboards/{pk}/")
+    Call<SubBoard> patch_SubBoard(@Path("pk") int pk, @Query("format") String json, @Field("no") Integer no);
 /*
    @POST("userinfos/")
    Call<UserInfo> post_json_Userinfo_java(@Query("format") String json, @Body UserInfo json_test_java);

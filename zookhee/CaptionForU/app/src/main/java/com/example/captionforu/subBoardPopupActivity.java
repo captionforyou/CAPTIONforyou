@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +28,9 @@ public class subBoardPopupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_board_popup);
         String cookie=getIntent().getStringExtra("Cookie");
-
+        final String ID=getIntent().getStringExtra("ID");
+        final String NN=getIntent().getStringExtra("NN");
+        final String NO=getIntent().getStringExtra("NO");
         RetrofitConnection retrofitConnection = new RetrofitConnection();
         Call<SubBoard> call =  retrofitConnection.server.get_CertainSubBoard(Integer.parseInt(cookie),"json");
         call.enqueue(new Callback<SubBoard>() {
@@ -56,6 +59,34 @@ public class subBoardPopupActivity extends AppCompatActivity {
                         LinearLayout registerlayout=findViewById(R.id.registerlayout);
                         registerlayout.setVisibility(View.VISIBLE);
                     }
+                    Button statusButton = (Button)findViewById(R.id.statusbutton);
+                    final Integer stn = (Integer)subboard.getstatus();
+                    if(stn==1)
+                    {
+                        statusButton.setText("접수 필요 상태");
+                    }
+                    if(stn==2)
+                    {
+                        statusButton.setText("접수 완료 상태");
+                        statusButton.setEnabled(false);
+                        if(subboard.getregisterNickname().equals(NN))
+                        {
+                            statusButton.setText("등록 완료하기");
+                            statusButton.setEnabled(true);
+                        }
+                    }
+                    if(stn==3) {
+                        statusButton.setText("등록 완료 상태");
+                    }
+                    statusButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(stn==1)
+                            {
+                                
+                            }
+                        }
+                    });
                     LinearLayout vislayout=findViewById(R.id.vislayout);
                     vislayout.setVisibility(View.VISIBLE);
                 }
