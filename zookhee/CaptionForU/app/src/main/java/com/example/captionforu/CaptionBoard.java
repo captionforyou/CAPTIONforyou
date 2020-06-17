@@ -23,6 +23,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.app.Activity.RESULT_OK;
 
 public class CaptionBoard extends Fragment  {
@@ -52,6 +56,7 @@ public class CaptionBoard extends Fragment  {
                 Intent intent = new Intent(getActivity(),newreqActivity.class);
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
+
                 startActivityForResult(intent,0);
                 createList();
             }
@@ -63,7 +68,6 @@ public class CaptionBoard extends Fragment  {
                 createList();
             }
         });
-
         createList();
         return rootview;
         }
@@ -78,36 +82,57 @@ public class CaptionBoard extends Fragment  {
         }
         public void  createList() {
             ScrollView scroll = (ScrollView) rootview.findViewById(R.id.scroll);
-            LinearLayout list = (LinearLayout) scroll.findViewById(R.id.list);
-            DataAdapter mDbHelper = new DataAdapter(getActivity());
-            mDbHelper.createDatabase();
-            mDbHelper.open();
+            final LinearLayout list = (LinearLayout) scroll.findViewById(R.id.list);
             list.removeAllViews();
-            boardList = mDbHelper.getBoardData();
-
-
-            for (int i = 0; i < boardList.size(); i++) {
-                LinearLayout newlist = (LinearLayout) View.inflate(getActivity()  , R.layout.captionboardlayout, null);
-                final String link = boardList.get(i).link.toString();
-                ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);
-                Glide.with(this).load("https://img.youtube.com/vi/"+link+"/hqdefault.jpg").into(img);
-                TextView lang = (TextView) newlist.findViewById(R.id.lang);
-                lang.setText("언어 : " + boardList.get(i).language);
-                TextView pay = (TextView) newlist.findViewById(R.id.pay);
-                pay.setText("페이 : " + boardList.get(i).tax+"원");
-                TextView status = (TextView) newlist.findViewById(R.id.status);
-                Log.d("youtubetest", "" + boardList.get(i).status);
-                Integer stn = (Integer)boardList.get(i).status;
-                if(stn==1)
-                    status.setText("접수 필요");
-                if(stn==2)
-                    status.setText("접수 완료");
-                if(stn==3)
-                    status.setText("등록 완료");
-                //YouTubePlayerView youTubePlayerView = (YouTubePlayerView) newlist.findViewById(R.id.youtubeView);
-                //youTubePlayerView.play(link, null);
-                list.addView(newlist);
-            }
+            RetrofitConnection retrofitConnection = new RetrofitConnection();
+            Call<List<SubBoard>> call =  retrofitConnection.server.get_SubBoard("json");
+            call.enqueue(new Callback<List<SubBoard>>() {
+                @Override
+                public void onResponse(Call<List<SubBoard>> call, Response<List<SubBoard>> response) {
+                    try
+                    {
+                        Log.e("succ","게시판 db 불러오기 성공");
+                        boardList=response.body();
+                        for (int i = 0; i < boardList.size(); i++) {
+                            LinearLayout newlist = (LinearLayout) View.inflate(getActivity()  , R.layout.captionboardlayout, null);
+                            final String link = boardList.get(i).link.toString();
+                            ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);
+                            Glide.with(CaptionBoard.this).load("https://img.youtube.com/vi/"+link+"/hqdefault.jpg").into(img);
+                            TextView lang = (TextView) newlist.findViewById(R.id.lang);
+                            lang.setText("언어 : " + boardList.get(i).language);
+                            TextView pay = (TextView) newlist.findViewById(R.id.pay);
+                            pay.setText("페이 : " + boardList.get(i).tax+"원");
+                            TextView status = (TextView) newlist.findViewById(R.id.status);
+                            Log.d("youtubetest", "" + boardList.get(i).status);
+                            Integer stn = (Integer)boardList.get(i).status;
+                            if(stn==1)
+                                status.setText("접수 필요");
+                            if(stn==2)
+                                status.setText("접수 완료");
+                            if(stn==3)
+                                status.setText("등록 완료");
+                            //YouTubePlayerView youTubePlayerView = (YouTubePlayerView) newlist.findViewById(R.id.youtubeView);
+                            //youTubePlayerView.play(link, null);
+                            final Integer temp = i;
+                            newlist.setOnClickListener(new View.OnClickListener(){
+                                public void onClick(View v){
+                                    Intent intent = new Intent(getActivity(), subBoardPopupActivity.class);
+                                    intent.putExtra("Cookie",boardList.get(temp).no.toString());
+                                    startActivity(intent);
+                                }
+                            });;
+                            list.addView(newlist);
+                        }
+                    }
+                    catch (Exception e) {
+                        Log.e("fail","게시판 db 불러오기 실패");
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<SubBoard>> call, Throwable t) {
+                    Log.e("fail",t.toString());
+                }
+            });
         }
 
     }

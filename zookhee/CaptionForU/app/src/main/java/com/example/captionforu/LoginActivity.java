@@ -1,5 +1,6 @@
 package com.example.captionforu;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,22 +12,32 @@ import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-
+    public List<UserInfo> userList ;
+    Gson gson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initLoadDB();
-
+        initLoadUserList();
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
 
@@ -34,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                initLoadDB();
+                initLoadUserList();
                 attemptLogin();
             }
         });
@@ -44,28 +55,36 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-                initLoadDB();
-                Log.d("listupdate",""+userList.size());
+                startActivityForResult(intent,0);
+                initLoadUserList();
             }
         });
 
-
     }
 
-    public List<UserInfo> userList ;
+    private void initLoadUserList() {
 
-    private void initLoadDB() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<List<UserInfo>> call =  retrofitConnection.server.get_Userinfo("json");
 
-        DataAdapter mDbHelper = new DataAdapter(getApplicationContext());
-        mDbHelper.createDatabase();
-        mDbHelper.open();
 
-        // db에 있는 값들을 model을 적용해서 넣는다.
-        userList = mDbHelper.getTableData();
-
-        // db 닫기
-        mDbHelper.close();
+        call.enqueue(new Callback<List<UserInfo>>() {
+            @Override
+            public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
+                try
+                {
+                    Log.e("succ","db 불러오기 성공");
+                    userList=response.body();
+                }
+                catch (Exception e) {
+                    Log.e("fail","db 불러오기 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<List<UserInfo>> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
     }
 
     private void attemptLogin() {
@@ -77,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
         Integer cancel = 0;
         Log.d("logintest",""+userList.size());
         for(int i=0;i<userList.size();i++)
@@ -106,6 +124,15 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode ==0) {
+            if (resultCode == RESULT_OK) {
+                initLoadUserList();
+                Toast.makeText(this, "회원가입을 완료하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
 

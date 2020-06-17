@@ -1,17 +1,42 @@
 package com.example.captionforu;
 
+import com.google.gson.annotations.SerializedName;
+
 public class UserInfo {
+    @SerializedName("no")
     public Integer no;
+
+    @SerializedName("id")
     public String id;
+
+    @SerializedName("password")
     public String password;
+
+    @SerializedName("nickname")
     public String nickname;
+
+    @SerializedName("points")
     public Integer points;
+
+    @SerializedName("money")
     public Integer money;
+
+    @SerializedName("requestnum")
     public Integer requestNum;
+
+    @SerializedName("registernum")
     public Integer regiseterNum;
+
+    @SerializedName("ratingcompleteness")
     public double ratingCompletenss;
+
+    @SerializedName("ratingclarity")
     public double ratingClarity;
+
+    @SerializedName("ratingtime")
     public Integer ratingTime;
+
+    @SerializedName("noticecnt")
     public Integer noticeCnt;
 
     public Integer getno() {

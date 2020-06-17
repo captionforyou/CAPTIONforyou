@@ -34,6 +34,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class newreqActivity extends AppCompatActivity {
 
 
@@ -65,6 +69,26 @@ public class newreqActivity extends AppCompatActivity {
 
         TextView reqnickname=(TextView)findViewById(R.id.reqnickname);
         reqnickname.setText(NN);
+
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<List<SubBoard>> call =  retrofitConnection.server.get_SubBoard("json");
+        call.enqueue(new Callback<List<SubBoard>>() {
+            @Override
+            public void onResponse(Call<List<SubBoard>> call, Response<List<SubBoard>> response) {
+                try
+                {
+                    Log.e("succ","게시판 db 불러오기 성공");
+                    boardList=response.body();
+                }
+                catch (Exception e) {
+                    Log.e("fail","게시판 db 불러오기 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<List<SubBoard>> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
 
 
         langspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -100,13 +124,10 @@ public class newreqActivity extends AppCompatActivity {
 
     }
     public List<SubBoard> boardList ;
-    private void insertNewSubBoard(String nickname) {
-        DataAdapter mDbHelper = new DataAdapter(getApplicationContext());
-        mDbHelper.createDatabase();
-        mDbHelper.open();
-        cancel=0;
-        boardList = mDbHelper.getBoardData();
 
+    private void insertNewSubBoard(String nickname) {
+
+        cancel=0;
         for (int i = 0; i < boardList.size(); i++) {
             if(boardList.get(i).link.equals(youtubelink.getText().toString()) && boardList.get(i).language.equals(selectedlanguage))
                 cancel=1;
@@ -128,11 +149,37 @@ public class newreqActivity extends AppCompatActivity {
         }
         else
         {
-            mDbHelper.insertNewSubBoard(ID,NN,youtubelink.getText().toString(),selectedlanguage,selectedcontents,Integer.parseInt(newpay.getText().toString()));
-            //((CaptionBoard) getSupportFragmentManager().findFragmentByTag("captionboard")).createList();
+            SubBoard subboard = new SubBoard();
+            subboard.setlink(youtubelink.getText().toString());
+            subboard.setstatus(1);
+            subboard.setrequestNickname(NN);
+            Log.e("anjwl",subboard.getrequestNickname());
+            subboard.setcontents(selectedcontents);
+            subboard.setlanguage(selectedlanguage);
+            subboard.settax(Integer.parseInt(newpay.getText().toString()));
+            subboard.settime((int) (System.currentTimeMillis()));
+            RetrofitConnection retrofitConnection = new RetrofitConnection();
+            Call<SubBoard> postcall =  retrofitConnection.server.post_SubBoard("json",subboard);
+            postcall.enqueue(new Callback<SubBoard>() {
+                @Override
+                public void onResponse(Call<SubBoard> call, Response<SubBoard> response) {
+                    try {
+                        Log.e("succ","ID 등록 성공");
+                    }
+                    catch (Exception e) {
+                        int StatusCode = response.code();
+                        Log.e("fail","ID 등록 실패");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<SubBoard> call, Throwable t) {
+                    Log.e("fail",t.toString());
+                }
+            });
             setResult(RESULT_OK);
             finish();
         }
-        mDbHelper.close();
     }
 }

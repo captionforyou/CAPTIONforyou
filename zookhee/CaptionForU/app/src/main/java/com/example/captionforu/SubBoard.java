@@ -1,14 +1,36 @@
 package com.example.captionforu;
 
+import com.google.gson.annotations.SerializedName;
+
+
+
 public class SubBoard {
+    @SerializedName("no")
     public Integer no;
+
+    @SerializedName("link")
     public String link;
+
+    @SerializedName("status")
     public Integer status;
+
+    @SerializedName("registernickname")
     public String registerNickname;
+
+    @SerializedName("requestnickname")
     public String requestNickname;
+
+    @SerializedName("language")
     public String language;
+
+    @SerializedName("contents")
     public String contents;
+
+    @SerializedName("tax")
     public Integer tax;
+
+    @SerializedName("time")
+    public Integer time;
 
     public Integer getno() {
         return no;
@@ -56,11 +78,18 @@ public class SubBoard {
         this.contents=contents;
     }
 
-    public Integer getax() {
+    public Integer gettax() {
         return tax;
     }
     public void settax(Integer tax) {
         this.tax=tax;
+    }
+
+    public Integer gettime() {
+        return time;
+    }
+    public void settime(Integer time) {
+        this.time=time;
     }
 
 }
