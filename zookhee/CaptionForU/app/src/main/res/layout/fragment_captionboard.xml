@@ -66,6 +66,13 @@
             android:layout_weight="1"
             android:entries="@array/cbcontents_array" />
 
+        <Spinner
+            android:id="@+id/cbstatusspinner"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:entries="@array/cbstatus_array" />
+
     </LinearLayout>
 
     <ScrollView

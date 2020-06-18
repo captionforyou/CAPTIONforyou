@@ -42,6 +42,7 @@ public class CaptionBoard extends Fragment  {
         View rootview;
         String selectedlanguage;
         String selectedcontents;
+        String selectedstatus;
 
         //YouTubePlayer.OnInitializedListener listener;
     @Nullable
@@ -103,7 +104,19 @@ public class CaptionBoard extends Fragment  {
             }
         });
 
+        Spinner cbstatusspinner=(Spinner)rootview.findViewById(R.id.cbstatusspinner);
+        cbstatusspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedstatus=parent.getItemAtPosition(position).toString();
+                createList();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedstatus=parent.getItemAtPosition(0).toString();
+            }
+        });
         return rootview;
         }
         @Override
@@ -128,9 +141,14 @@ public class CaptionBoard extends Fragment  {
                     {
                         Log.e("succ","게시판 db 불러오기 성공");
                         boardList=response.body();
+                        Integer sta=0;
+                        if(selectedstatus.equals("접수 필요")) sta=1;
+                        if(selectedstatus.equals("접수 완료")) sta=2;
+                        if(selectedstatus.equals("등록 완료")) sta=3;
                         for (int i = 0; i < boardList.size(); i++) {
                             if(!selectedlanguage.equals("모든 언어") && !selectedlanguage.equals(boardList.get(i).getlanguage())) continue;
                             if(!selectedcontents.equals("모든 컨텐츠") && !selectedcontents.equals(boardList.get(i).getcontents())) continue;
+                            if(!selectedstatus.equals("모든 상태") && sta!=boardList.get(i).getstatus()) continue;
                             LinearLayout newlist = (LinearLayout) View.inflate(getActivity()  , R.layout.captionboardlayout, null);
                             final String link = boardList.get(i).link.toString();
                             ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);

@@ -77,6 +77,7 @@ public class subBoardPopupActivity extends AppCompatActivity {
                     }
                     if(stn==3) {
                         statusButton.setText("등록 완료 상태");
+                        statusButton.setEnabled(false);
                     }
                     statusButton.setOnClickListener(new View.OnClickListener() {
                         @Override

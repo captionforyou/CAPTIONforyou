@@ -4,32 +4,31 @@
     <item
         android:id="@+id/boardtab"
         app:showAsAction="always"
-        android:icon="@drawable/ajou_another"
+        android:icon="@drawable/captionboard"
         android:enabled="true"
         android:title="자막 게시판"/>
     <item
         android:id="@+id/studytab"
         app:showAsAction="always"
-        android:icon="@drawable/ajou_another"
+        android:icon="@drawable/study2"
         android:enabled="true"
         android:title="언어 공부"/>
     <item
         android:id="@+id/rankingtab"
         app:showAsAction="always"
-        android:icon="@drawable/ajou_another"
+        android:icon="@drawable/ranking"
         android:enabled="true"
         android:title="랭킹"/>
     <item
         android:id="@+id/eventtab"
         app:showAsAction="always"
-        android:icon="@drawable/ajou_another"
+        android:icon="@drawable/event"
         android:enabled="true"
         android:title="이벤트"/>
     <item
         android:id="@+id/profiletab"
         app:showAsAction="always"
-        android:icon="@drawable/ajou_another"
+        android:icon="@drawable/profile"
         android:enabled="true"
         android:title="프로필"/>
-
 </menu>

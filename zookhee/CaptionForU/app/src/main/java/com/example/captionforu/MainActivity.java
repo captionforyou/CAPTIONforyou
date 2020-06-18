@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Ranking ranking = new Ranking();
     private Event event = new Event();
     private Profile profile = new Profile();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -45,9 +45,6 @@ import retrofit2.Response;
 
 public class showCaptionBoard extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
     List<SubBoard> boardList;
 
     @Override
@@ -76,12 +73,12 @@ public class showCaptionBoard extends AppCompatActivity {
                             if(!boardList.get(i).getrequestNickname().equals(NN))
                                 continue;
                         }
-                        else if(command.equals("working_on"))
+                        if(command.equals("working_on"))
                         {
                             if(!boardList.get(i).getregisterNickname().equals(NN) || boardList.get(i).getstatus()!=2)
                                 continue;
                         }
-                        else if(command.equals("done"))
+                        if(command.equals("done"))
                         {
                             if(!boardList.get(i).getregisterNickname().equals(NN) || boardList.get(i).getstatus()!=3)
                                 continue;
@@ -103,16 +100,19 @@ public class showCaptionBoard extends AppCompatActivity {
                             status.setText("접수 완료");
                         if(stn==3)
                             status.setText("등록 완료");
-                        //YouTubePlayerView youTubePlayerView = (YouTubePlayerView) newlist.findViewById(R.id.youtubeView);
-                        //youTubePlayerView.play(link, null);
                         final Integer temp = i;
                         newlist.setOnClickListener(new View.OnClickListener(){
                             public void onClick(View v){
                                 Intent intent = new Intent(showCaptionBoard.this, subBoardPopupActivity.class);
                                 intent.putExtra("Cookie",boardList.get(temp).no.toString());
+                                intent.putExtra("NO",NO);
+                                intent.putExtra("ID",NN);
+                                intent.putExtra("ID",NN);
                                 startActivity(intent);
                             }
                         });;
+                        TextView showcbtextivew = (TextView)findViewById(R.id.showcbtextview);
+                        showcbtextivew.setVisibility(View.GONE);
                         list.addView(newlist);
                     }
                 }

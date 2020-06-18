@@ -32,5 +32,12 @@
         <item>노래/음악</item>
         <item>요리</item>
     </string-array>
+
+    <string-array name="cbstatus_array">
+        <item>모든 상태</item>
+        <item>접수 필요</item>
+        <item>접수 완료</item>
+        <item>등록 완료</item>
+    </string-array>
 </resources>
 

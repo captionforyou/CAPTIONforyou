@@ -82,7 +82,7 @@ public class Profile extends Fragment {
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
                 intent.putExtra("NO",NO);
-                startActivityForResult(intent,0);
+                startActivity(intent);
             }
         });
 
@@ -95,7 +95,7 @@ public class Profile extends Fragment {
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
                 intent.putExtra("NO",NO);
-                startActivityForResult(intent,0);
+                startActivity(intent);
             }
         });
 
@@ -108,7 +108,7 @@ public class Profile extends Fragment {
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
                 intent.putExtra("NO",NO);
-                startActivityForResult(intent,0);
+                startActivity(intent);
             }
         });
         return rootview;
