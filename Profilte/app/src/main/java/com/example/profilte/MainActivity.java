@@ -1,11 +1,19 @@
 package com.example.profilte;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,14 +22,53 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-  //  SubBoardDBHelper dbHelper = null ;
+    private static final String CHANNEL_ID = "firstTest" ;
+    //  SubBoardDBHelper dbHelper = null ;
     private SQLiteDatabase profiledb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       //ProfileDatabaseManager databaseManager = ProfileDatabaseManager.getInstance(this);
+        //=================================
+        //notice
+        findViewById(R.id.registerToNotice).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                createNotificationChannel();
+
+                Bitmap mLargeIcoForNoti =
+                        BitmapFactory.decodeResource(getResources(),R.drawable.notice);
+
+                PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this,0,
+                        new Intent(MainActivity.this,noticeActivity.class),
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+                                .setSmallIcon(R.drawable.profileimage)
+                                .setContentTitle("caption_for_you")
+                                .setContentText("자막 요청 접수")
+                                .setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE)
+                                .setLargeIcon(mLargeIcoForNoti)
+                                .setVisibility (NotificationCompat.VISIBILITY_PUBLIC)
+                                //.setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setAutoCancel(true)
+                                .setContentIntent(mPendingIntent);
+
+                NotificationManager mNotificationManager =
+                        (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                mNotificationManager.notify(0,mBuilder.build());
+
+            }
+        });
+        //=================================
+
+
+
+        //ProfileDatabaseManager databaseManager = ProfileDatabaseManager.getInstance(this);
         boolean isOpen = openDatabase();
         if(isOpen) {
             putToprofile();
@@ -54,6 +101,24 @@ public class MainActivity extends AppCompatActivity {
         Intent activityIntent = new Intent(this, noticeActivity.class);
         startActivity(activityIntent);
     }
+
+    //====================================
+    //notice
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "captionforyou";
+            String description = "testing";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    //======================================
 
     private boolean openDatabase() {
 //        sampleDB =  SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
