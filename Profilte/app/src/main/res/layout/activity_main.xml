@@ -251,6 +251,18 @@
             android:textColor="#ffffff"
             android:textStyle="bold"
             tools:ignore="OnClick" />
+        <Button
+            android:id="@+id/registerToNotice"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="148dp"
+            android:layout_marginLeft="148dp"
+            android:layout_marginTop="90dp"
+            android:background="#FFFF4081"
+            android:text="임의접수"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            tools:ignore="OnClick" />
 
         <Button
             android:id="@+id/goToNotice"
