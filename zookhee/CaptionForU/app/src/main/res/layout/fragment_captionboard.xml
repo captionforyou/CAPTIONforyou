@@ -30,7 +30,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="자막게시판"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
 

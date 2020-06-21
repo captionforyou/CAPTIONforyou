@@ -62,30 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                 initLoadUserList();
             }
         });
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.youtube.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService server = retrofit.create(ApiService.class);
-            Call<ResponseBody> call =  server.get_youtubeinfo("TPXWtozVNzM");
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try
-                {
-                    Log.e("succ",response.body().string());
-                }
-                catch (Exception e) {
-                    Log.e("fail","db 불러오기 실패");
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("fail",t.toString());
-            }
-        });
     }
 
     private void initLoadUserList() {

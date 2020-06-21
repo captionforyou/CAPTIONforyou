@@ -18,14 +18,15 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("get_video_info")
-    Call<JSONObject> get_youtubeinfo(@Query("video_id") String id);
 
     @GET("userinfos/")
     Call<List<UserInfo>> get_Userinfo(@Query("format") String json);
 
     @GET("userinfos/{pk}")
     Call<UserInfo> get_CertainUserinfo(@Path("pk") int pk, @Query("format") String json);
+
+    @GET("userinfos/")
+    Call<UserInfo> get_CertainnicknameUserinfo(@Query("format") String json,@Field("registernickname") String registernickname);
 
     @POST("userinfos/")
     Call<UserInfo> post_Userinfo(@Query("format") String json, @Body UserInfo userinfo);
@@ -40,7 +41,23 @@ public interface ApiService {
 
     @FormUrlEncoded
     @PATCH("userinfos/{pk}/")
-    Call<UserInfo> patchnoticecnt_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("noticecnt") String noticecnt);
+    Call<UserInfo> patchrequestnum_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("requestnum") Integer requestnum);
+
+    @FormUrlEncoded
+    @PATCH("userinfos/{pk}/")
+    Call<UserInfo> patchregisternum_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("registernum") Integer registernum);
+
+    @FormUrlEncoded
+    @PATCH("userinfos/{pk}/")
+    Call<UserInfo> patchratingCnt_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("ratingcnt") Integer ratingcnt);
+
+    @FormUrlEncoded
+    @PATCH("userinfos/{pk}/")
+    Call<UserInfo> patchratingCompleteness_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("ratingcompleteness") double ratingcnt);
+
+    @FormUrlEncoded
+    @PATCH("userinfos/{pk}/")
+    Call<UserInfo> patchratingClarity_CertainUserinfo(@Path("pk") int pk, @Query("format") String json, @Field("ratingclarity") double ratingcnt);
 
     @GET("subboards/")
     Call<List<SubBoard>> get_SubBoard(@Query("format") String json);
@@ -59,16 +76,12 @@ public interface ApiService {
     @PATCH("subboards/{pk}/")
     Call<SubBoard> patchregisternickname_SubBoard(@Path("pk") int pk, @Query("format") String json, @Field("registernickname") String registernickname);
 
-/*
-   @POST("userinfos/")
-   Call<UserInfo> post_json_Userinfo_java(@Query("format") String json, @Body UserInfo json_test_java);
+    @FormUrlEncoded
+    @PATCH("subboards/{pk}/")
+    Call<SubBoard> patchregisterno_SubBoard(@Path("pk") int pk, @Query("format") String json, @Field("registerno") Integer registerno);
 
-   @FormUrlEncoded
-   @PATCH("userinfos/{pk}/")
-   Call<ResponseBody> patch_Userinfo(@Path("pk") int pk, @Query("format") String json, @Field("Userinfo") String test);
+    @FormUrlEncoded
+    @PATCH("subboards/{pk}/")
+    Call<SubBoard> patchisrated_SubBoard(@Path("pk") int pk, @Query("format") String json, @Field("israted") Integer israted);
 
-
-   @DELETE("userinfos/{pk}/")
-    Call<ResponseBody> delete_Usereinfo(@Path("pk") int pk, @Query("format") String json);
-*/
 }

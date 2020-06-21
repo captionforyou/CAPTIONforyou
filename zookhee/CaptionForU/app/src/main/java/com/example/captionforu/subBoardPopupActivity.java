@@ -2,6 +2,7 @@ package com.example.captionforu;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class subBoardPopupActivity extends AppCompatActivity {
     String NO;
     String cookie;
     UserInfo userinfo;
+    Integer stn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class subBoardPopupActivity extends AppCompatActivity {
                     popupregisternickname=findViewById(R.id.popupregistrnickname);
                     visregisternickname();
                     final Button statusButton = (Button)findViewById(R.id.statusbutton);
-                    final Integer stn = (Integer)subboard.getstatus();
+                    stn = (Integer)subboard.getstatus();
                     if(stn==1)
                     {
                         statusButton.setText("접수 필요 상태");
@@ -89,8 +91,20 @@ public class subBoardPopupActivity extends AppCompatActivity {
                         }
                     }
                     if(stn==3) {
-                        statusButton.setText("등록 완료 상태");
-                        statusButton.setEnabled(false);
+                        if(subboard.getrequestNickname().equals(NN) && subboard.getisrated()==0)
+                        {
+                            statusButton.setText("평가하기");
+                            statusButton.setEnabled(true);
+                        }
+                        else if(subboard.getrequestNickname().equals(NN) && subboard.getisrated()==1){
+                            statusButton.setText("평가 완료 상태");
+                            statusButton.setEnabled(false);
+                        }
+                        else
+                        {
+                            statusButton.setText("등록 완료 상태");
+                            statusButton.setEnabled(false);
+                        }
                     }
                     statusButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -104,7 +118,7 @@ public class subBoardPopupActivity extends AppCompatActivity {
                                                 Toast.makeText(subBoardPopupActivity.this, "접수를 완료했습니다.", Toast.LENGTH_SHORT).show();
                                                 subboard.setstatus(2);
                                                 subboard.setregisterNickname(NN);
-                                                patchstatus(subboard.getno(),2);
+                                                stn=2;
                                                 patchregisternickname(subboard.getno(),NN);
                                                 patchpoints();
                                                 statusButton.setText("등록 완료하기");
@@ -125,15 +139,28 @@ public class subBoardPopupActivity extends AppCompatActivity {
                                                 Toast.makeText(subBoardPopupActivity.this, "등록를 완료했습니다.", Toast.LENGTH_SHORT).show();
                                                 subboard.setstatus(3);
                                                 subboard.setregisterNickname(NN);
+                                                stn=3;
                                                 patchstatus(subboard.getno(),3);
-                                                patchregisternickname(subboard.getno(),NN);
+                                                patchregisternum();
                                                 statusButton.setText("등록 완료 상태");
-                                                statusButton.setEnabled(true);
+                                                statusButton.setEnabled(false);
                                             }})
                                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
                                             }})
                                         .show();
+                            }
+                            else if(stn==3)
+                            {
+                                Intent intent = new Intent(subBoardPopupActivity.this, ratePopupActivity.class);
+                                intent.putExtra("NO",NO);
+                                intent.putExtra("ID",ID);
+                                intent.putExtra("NN",NN);
+                                intent.putExtra("registerno",subboard.getregisterno());
+                                intent.putExtra("subboardno",subboard.getno());
+                                intent.putExtra("subboardpay",subboard.gettax());
+                                startActivity(intent);
+
                             }
                         }
                     });
@@ -163,6 +190,27 @@ public class subBoardPopupActivity extends AppCompatActivity {
             registerlayout.setVisibility(View.VISIBLE);
         }
     }
+    public void patchregisternum()
+    {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> call =  retrofitConnection.server.patchregisternum_CertainUserinfo(Integer.parseInt(NO),"json",(userinfo.getregiseterNum()+1));
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","patch registernum성공");
+                }
+                catch (Exception e) {
+                    Log.e("fail","patch registernum실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
     public void patchstatus(Integer patchno,Integer status){
         RetrofitConnection retrofitConnection = new RetrofitConnection();
         Call<SubBoard> call =  retrofitConnection.server.patchstatus_SubBoard(patchno,"json",status);
@@ -185,8 +233,34 @@ public class subBoardPopupActivity extends AppCompatActivity {
         });
 
     }
+    public void patchregisterno(Integer patchno,Integer registerno){
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Log.e("registerno",""+patchno);
+        Log.e("registerno",""+registerno);
+        Call<SubBoard> call =  retrofitConnection.server.patchregisterno_SubBoard(patchno,"json",registerno);
+        call.enqueue(new Callback<SubBoard>() {
+            @Override
+            public void onResponse(Call<SubBoard> call, Response<SubBoard> response) {
+                try
+                {
+                    Log.e("succ","patch registerno성공");
+                    visregisternickname();
+                    patchstatus(subboard.getno(),2);
+                }
+                catch (Exception e) {
+                    Log.e("fail","patch registerno실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<SubBoard> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+
+    }
     public void patchregisternickname(Integer patchno, String nickname){
         RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Log.e("registerno",""+nickname);
         Call<SubBoard> call =  retrofitConnection.server.patchregisternickname_SubBoard(patchno,"json",nickname);
         call.enqueue(new Callback<SubBoard>() {
             @Override
@@ -194,6 +268,7 @@ public class subBoardPopupActivity extends AppCompatActivity {
                 try
                 {
                     Log.e("succ","patch registernickanme성공");
+                    patchregisterno(subboard.getno(),Integer.parseInt(NO));
                 }
                 catch (Exception e) {
                     Log.e("fail","patch registernickanme실패");

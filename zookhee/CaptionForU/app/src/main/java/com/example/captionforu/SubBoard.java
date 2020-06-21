@@ -17,6 +17,9 @@ public class SubBoard {
     @SerializedName("registernickname")
     public String registerNickname;
 
+    @SerializedName("registerno")
+    public Integer registerno;
+
     @SerializedName("requestnickname")
     public String requestNickname;
 
@@ -29,14 +32,19 @@ public class SubBoard {
     @SerializedName("tax")
     public Integer tax;
 
-    @SerializedName("time")
-    public Integer time;
+    @SerializedName("israted")
+    public Integer israted;
 
     public Integer getno() {
         return no;
     }
-    public void setno(Integer no) {
-        this.no=no;
+    public void setno(Integer no) { this.no=no; }
+
+    public Integer getregisterno() {
+        return registerno;
+    }
+    public void setregisterno(Integer registerno) {
+        this.registerno=registerno;
     }
 
     public String getlink() {
@@ -85,11 +93,11 @@ public class SubBoard {
         this.tax=tax;
     }
 
-    public Integer gettime() {
-        return time;
+    public Integer getisrated() {
+        return israted;
     }
-    public void settime(Integer time) {
-        this.time=time;
+    public void setisrated(Integer israted) {
+        this.israted=israted;
     }
 
 }

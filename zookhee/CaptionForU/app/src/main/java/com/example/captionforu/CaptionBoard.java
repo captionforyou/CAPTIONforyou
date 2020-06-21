@@ -153,21 +153,26 @@ public class CaptionBoard extends Fragment  {
                             if(!selectedcontents.equals("모든 컨텐츠") && !selectedcontents.equals(boardList.get(i).getcontents())) continue;
                             if(!selectedstatus.equals("모든 상태") && sta!=boardList.get(i).getstatus()) continue;
                             LinearLayout newlist = (LinearLayout) View.inflate(getActivity()  , R.layout.captionboardlayout, null);
-                            final String link = boardList.get(i).link.toString();
+                            final String link = boardList.get(i).getlink().toString();
                             ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);
                             Glide.with(CaptionBoard.this).load("https://img.youtube.com/vi/"+link+"/hqdefault.jpg").into(img);
                             TextView lang = (TextView) newlist.findViewById(R.id.lang);
-                            lang.setText("언어 : " + boardList.get(i).language);
+                            lang.setText("언어 : " + boardList.get(i).getlanguage());
                             TextView pay = (TextView) newlist.findViewById(R.id.pay);
-                            pay.setText("페이 : " + boardList.get(i).tax+"원");
+                            pay.setText("페이 : " + boardList.get(i).gettax()+"원");
                             TextView status = (TextView) newlist.findViewById(R.id.status);
                             Integer stn = (Integer)boardList.get(i).status;
                             if(stn==1)
                                 status.setText("접수 필요");
                             if(stn==2)
                                 status.setText("접수 완료");
-                            if(stn==3)
+                            if(stn==3) {
+                                if(boardList.get(i).getrequestNickname().equals(NN) && boardList.get(i).getisrated()==0)
+                                {
+                                    status.setText("평가 필요");
+                                }
                                 status.setText("등록 완료");
+                            }
                             final Integer temp = i;
                             newlist.setOnClickListener(new View.OnClickListener(){
                                 public void onClick(View v){

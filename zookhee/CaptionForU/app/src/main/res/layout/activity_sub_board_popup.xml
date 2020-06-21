@@ -24,7 +24,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="자막게시판"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -169,7 +169,9 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="50dp"
-                android:text="접수 필요" />
+                android:background="@color/maincolor"
+                android:text="접수 필요"
+                android:textColor="@color/white" />
 
             <LinearLayout
                 android:id="@+id/registerlayout"

@@ -159,7 +159,6 @@ public class newreqActivity extends AppCompatActivity {
                 cancel=1;
         }
 
-        //Glide.with(this).load("https://img.youtube.com/vi/"+youtubelink.getText().toString()+"/hqdefault.jpg");
 
         if(newpay.getText().toString().equals("") || youtubelink.getText().toString().equals(""))
         {
@@ -173,17 +172,23 @@ public class newreqActivity extends AppCompatActivity {
         {
             Toast.makeText(this, "이미 존재하는 요청입니다.", Toast.LENGTH_SHORT).show();
         }
+        else if(userinfo.getmoney()<Integer.parseInt(newpay.getText().toString()))
+        {
+            Toast.makeText(this, "보유하고 있는 money가 부족합니다.", Toast.LENGTH_SHORT).show();
+        }
         else
         {
             SubBoard subboard = new SubBoard();
             subboard.setlink(youtubelink.getText().toString());
             subboard.setstatus(1);
+            subboard.setregisterNickname("");
+            subboard.setregisterno(0);
             subboard.setrequestNickname(NN);
             Log.e("anjwl",subboard.getrequestNickname());
             subboard.setcontents(selectedcontents);
             subboard.setlanguage(selectedlanguage);
             subboard.settax(Integer.parseInt(newpay.getText().toString()));
-            subboard.settime((int) (System.currentTimeMillis()));
+            subboard.setisrated(0);
             RetrofitConnection retrofitConnection = new RetrofitConnection();
             Call<SubBoard> postcall =  retrofitConnection.server.post_SubBoard("json",subboard);
             postcall.enqueue(new Callback<SubBoard>() {
@@ -204,12 +209,56 @@ public class newreqActivity extends AppCompatActivity {
                     Log.e("fail",t.toString());
                 }
             });
-
+            patchrequestNum();
             patchpoints();
+            patchmoney(Integer.parseInt(newpay.getText().toString()));
             setResult(RESULT_OK);
             finish();
         }
     }
+    public void patchmoney(Integer money)
+    {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> call =  retrofitConnection.server.patchmoney_CertainUserinfo(Integer.parseInt(NO),"json",(userinfo.getmoney()-money));
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","patch money성공");
+                }
+                catch (Exception e) {
+                    Log.e("fail","patch money실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
+
+    public void patchrequestNum() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> call =  retrofitConnection.server.patchrequestnum_CertainUserinfo(Integer.parseInt(NO),"json",(userinfo.getrequestNum()+1));
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","patch requsetnum성공");
+                }
+                catch (Exception e) {
+                    Log.e("fail","patch requsetnum실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
+
     public void patchpoints() {
         RetrofitConnection retrofitConnection = new RetrofitConnection();
         Call<UserInfo> call =  retrofitConnection.server.patchpoints_CertainUserinfo(Integer.parseInt(NO),"json",(userinfo.getpoints()+10));
@@ -221,7 +270,7 @@ public class newreqActivity extends AppCompatActivity {
                     Log.e("succ","patch point성공");
                 }
                 catch (Exception e) {
-                    Log.e("fail","patch point성공");
+                    Log.e("fail","patch point실패");
                 }
             }
             @Override

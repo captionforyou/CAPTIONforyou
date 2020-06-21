@@ -77,6 +77,7 @@ public class Profile extends Fragment {
             }
         });
 
+
         return rootview;
     }
     public void setprofile()
@@ -106,6 +107,9 @@ public class Profile extends Fragment {
                     editComplete.setText(""+userinfo.getratingCompletenss()+" 점");
                     TextView editClarity = (TextView)rootview.findViewById(R.id.clarity) ;
                     editClarity.setText(""+userinfo.getratingClarity()+" 점");
+
+                    TextView editratingcnt = (TextView)rootview.findViewById(R.id.profileratingcnt) ;
+                    editratingcnt.setText(userinfo.getratingCnt()+"회의 평가 평균");
                 }
                 catch (Exception e) {
                     Log.e("fail","게시판 ceruserinfo 불러오기 실패");

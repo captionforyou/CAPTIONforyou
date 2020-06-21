@@ -1,6 +1,7 @@
 package com.example.captionforu;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,6 +76,11 @@ public class showCaptionBoard extends AppCompatActivity {
                         }
                         if(command.equals("working_on"))
                         {
+                            Log.e("working_on_no",boardList.get(i).getno()+"");
+                            Log.e("working_on",boardList.get(i).getregisterNickname());
+                            Log.e("working_on",NN);
+                            Log.e("working_on_stat",""+boardList.get(i).getstatus());
+
                             if(!boardList.get(i).getregisterNickname().equals(NN) || boardList.get(i).getstatus()!=2)
                                 continue;
                         }
@@ -84,30 +90,36 @@ public class showCaptionBoard extends AppCompatActivity {
                                 continue;
                         }
                         LinearLayout newlist = (LinearLayout) View.inflate(showCaptionBoard.this , R.layout.captionboardlayout, null);
-                        final String link = boardList.get(i).link.toString();
+                        final String link = boardList.get(i).getlink().toString();
                         ImageView img=(ImageView)newlist.findViewById(R.id.youtubeThumbnail);
                         Glide.with(showCaptionBoard.this).load("https://img.youtube.com/vi/"+link+"/hqdefault.jpg").into(img);
                         TextView lang = (TextView) newlist.findViewById(R.id.lang);
-                        lang.setText("언어 : " + boardList.get(i).language);
+                        lang.setText("언어 : " + boardList.get(i).getlanguage());
                         TextView pay = (TextView) newlist.findViewById(R.id.pay);
-                        pay.setText("페이 : " + boardList.get(i).tax+"원");
+                        pay.setText("페이 : " + boardList.get(i).gettax()+"원");
                         TextView status = (TextView) newlist.findViewById(R.id.status);
-                        Log.d("youtubetest", "" + boardList.get(i).status);
                         Integer stn = (Integer)boardList.get(i).status;
                         if(stn==1)
                             status.setText("접수 필요");
                         if(stn==2)
                             status.setText("접수 완료");
-                        if(stn==3)
-                            status.setText("등록 완료");
+                        if(stn==3) {
+                            if(boardList.get(i).getrequestNickname().equals(NN) && boardList.get(i).getisrated()==0)
+                            {
+                                status.setText("평가 필요");
+                                status.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.highlight));
+                            }
+                            else
+                                status.setText("등록 완료");
+                        }
                         final Integer temp = i;
                         newlist.setOnClickListener(new View.OnClickListener(){
                             public void onClick(View v){
                                 Intent intent = new Intent(showCaptionBoard.this, subBoardPopupActivity.class);
                                 intent.putExtra("Cookie",boardList.get(temp).no.toString());
                                 intent.putExtra("NO",NO);
-                                intent.putExtra("ID",NN);
-                                intent.putExtra("ID",NN);
+                                intent.putExtra("ID",ID);
+                                intent.putExtra("NN",NN);
                                 startActivity(intent);
                             }
                         });;
