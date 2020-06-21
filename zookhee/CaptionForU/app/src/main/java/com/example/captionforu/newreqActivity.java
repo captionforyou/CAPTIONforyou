@@ -50,7 +50,10 @@ public class newreqActivity extends AppCompatActivity {
     Button newregButton;
     String ID;
     String NN;
+    String NO;
     Integer cancel;
+    UserInfo userinfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,31 +68,13 @@ public class newreqActivity extends AppCompatActivity {
 
         ID = getIntent().getStringExtra("ID");
         NN = getIntent().getStringExtra("NN");
-
+        NO = getIntent().getStringExtra("NO");
 
         TextView reqnickname=(TextView)findViewById(R.id.reqnickname);
         reqnickname.setText(NN);
 
-        RetrofitConnection retrofitConnection = new RetrofitConnection();
-        Call<List<SubBoard>> call =  retrofitConnection.server.get_SubBoard("json");
-        call.enqueue(new Callback<List<SubBoard>>() {
-            @Override
-            public void onResponse(Call<List<SubBoard>> call, Response<List<SubBoard>> response) {
-                try
-                {
-                    Log.e("succ","게시판 db 불러오기 성공");
-                    boardList=response.body();
-                }
-                catch (Exception e) {
-                    Log.e("fail","게시판 db 불러오기 실패");
-                }
-            }
-            @Override
-            public void onFailure(Call<List<SubBoard>> call, Throwable t) {
-                Log.e("fail",t.toString());
-            }
-        });
-
+        loadList();
+        loadUser();
 
         langspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -123,10 +108,51 @@ public class newreqActivity extends AppCompatActivity {
         });
 
     }
+    public void loadList() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<List<SubBoard>> call =  retrofitConnection.server.get_SubBoard("json");
+        call.enqueue(new Callback<List<SubBoard>>() {
+            @Override
+            public void onResponse(Call<List<SubBoard>> call, Response<List<SubBoard>> response) {
+                try
+                {
+                    Log.e("succ","게시판 db 불러오기 성공");
+                    boardList=response.body();
+                }
+                catch (Exception e) {
+                    Log.e("fail","게시판 db 불러오기 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<List<SubBoard>> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
+    public void loadUser() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> usercall =  retrofitConnection.server.get_CertainUserinfo(Integer.parseInt(NO),"json");
+        usercall.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","게시판 ceruserinfo 불러오기 성공");
+                    userinfo = response.body();
+                }
+                catch (Exception e) {
+                    Log.e("fail","게시판 ceruserinfo 불러오기 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
     public List<SubBoard> boardList ;
 
-    private void insertNewSubBoard(String nickname) {
-
+    public void insertNewSubBoard(String nickname) {
         cancel=0;
         for (int i = 0; i < boardList.size(); i++) {
             if(boardList.get(i).link.equals(youtubelink.getText().toString()) && boardList.get(i).language.equals(selectedlanguage))
@@ -178,8 +204,31 @@ public class newreqActivity extends AppCompatActivity {
                     Log.e("fail",t.toString());
                 }
             });
+
+            patchpoints();
             setResult(RESULT_OK);
             finish();
         }
     }
+    public void patchpoints() {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> call =  retrofitConnection.server.patchpoints_CertainUserinfo(Integer.parseInt(NO),"json",(userinfo.getpoints()+10));
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","patch point성공");
+                }
+                catch (Exception e) {
+                    Log.e("fail","patch point성공");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
+
 }

@@ -24,6 +24,7 @@ public class Profile extends Fragment {
     String ID;
     String NN;
     String NO;
+    UserInfo userinfo;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,43 +36,7 @@ public class Profile extends Fragment {
             NN = bundle.getString("NN");
             NO = bundle.getString("NO");
         }
-        RetrofitConnection retrofitConnection = new RetrofitConnection();
-        Call<UserInfo> call =  retrofitConnection.server.get_CertainUserinfo(Integer.parseInt(NO),"json");
-        call.enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                try
-                {
-                    Log.e("succ","게시판 ceruserinfo 불러오기 성공");
-                    UserInfo userinfo = response.body();
-                    TextView editID = (TextView)rootview.findViewById(R.id.id) ;
-                    editID.setText(userinfo.getid());
-                    TextView editNickname = (TextView)rootview.findViewById(R.id.nickname) ;
-                    editNickname.setText(userinfo.getnn());
-                    TextView editPoints = (TextView)rootview.findViewById(R.id.points) ;
-                    editPoints.setText(""+userinfo.getpoints());
-                    TextView editMoney = (TextView)rootview.findViewById(R.id.money) ;
-                    editMoney.setText(""+userinfo.getmoney());
-                    TextView editRequestC = (TextView)rootview.findViewById(R.id.requestCount) ;
-                    editRequestC.setText("요청수"+userinfo.getrequestNum()+"건");
-                    TextView editRegisterC = (TextView)rootview.findViewById(R.id.registerCount) ;
-                    editRegisterC.setText("등록수"+userinfo.getregiseterNum()+"건");
-                    TextView editComplete = (TextView)rootview.findViewById(R.id.complete) ;
-                    editComplete.setText(""+userinfo.getratingCompletenss()+" 점");
-                    TextView editClarity = (TextView)rootview.findViewById(R.id.clarity) ;
-                    editClarity.setText(""+userinfo.getratingClarity()+" 점");
-                    TextView editTime = (TextView)rootview.findViewById(R.id.time) ;
-                    editTime.setText(""+userinfo.getratingTime()+" 점");
-                }
-                catch (Exception e) {
-                    Log.e("fail","게시판 ceruserinfo 불러오기 실패");
-                }
-            }
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-                Log.e("fail",t.toString());
-            }
-        });
+        setprofile();
 
         Button iwriteButton = (Button)rootview.findViewById(R.id.button_i_write);
         iwriteButton.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +76,46 @@ public class Profile extends Fragment {
                 startActivity(intent);
             }
         });
+
         return rootview;
     }
+    public void setprofile()
+    {
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<UserInfo> call =  retrofitConnection.server.get_CertainUserinfo(Integer.parseInt(NO),"json");
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                try
+                {
+                    Log.e("succ","게시판 ceruserinfo 불러오기 성공");
+                    userinfo = response.body();
+                    TextView editID = (TextView)rootview.findViewById(R.id.id) ;
+                    editID.setText(userinfo.getid());
+                    TextView editNickname = (TextView)rootview.findViewById(R.id.nickname) ;
+                    editNickname.setText(userinfo.getnn());
+                    TextView editPoints = (TextView)rootview.findViewById(R.id.points) ;
+                    editPoints.setText(""+userinfo.getpoints());
+                    TextView editMoney = (TextView)rootview.findViewById(R.id.money) ;
+                    editMoney.setText(""+userinfo.getmoney());
+                    TextView editRequestC = (TextView)rootview.findViewById(R.id.requestCount) ;
+                    editRequestC.setText("요청수"+userinfo.getrequestNum()+"건");
+                    TextView editRegisterC = (TextView)rootview.findViewById(R.id.registerCount) ;
+                    editRegisterC.setText("등록수"+userinfo.getregiseterNum()+"건");
+                    TextView editComplete = (TextView)rootview.findViewById(R.id.complete) ;
+                    editComplete.setText(""+userinfo.getratingCompletenss()+" 점");
+                    TextView editClarity = (TextView)rootview.findViewById(R.id.clarity) ;
+                    editClarity.setText(""+userinfo.getratingClarity()+" 점");
+                }
+                catch (Exception e) {
+                    Log.e("fail","게시판 ceruserinfo 불러오기 실패");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.e("fail",t.toString());
+            }
+        });
+    }
+
 }

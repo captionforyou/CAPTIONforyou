@@ -35,7 +35,6 @@ public class CaptionBoard extends Fragment  {
         public List<SubBoard> boardList;
         ImageButton newreqButton ;
         ImageButton refButton ;
-        Integer chk;
         String ID;
         String NN;
         String NO;
@@ -43,8 +42,6 @@ public class CaptionBoard extends Fragment  {
         String selectedlanguage;
         String selectedcontents;
         String selectedstatus;
-
-        //YouTubePlayer.OnInitializedListener listener;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,7 +60,7 @@ public class CaptionBoard extends Fragment  {
                 Intent intent = new Intent(getActivity(),newreqActivity.class);
                 intent.putExtra("ID",ID);
                 intent.putExtra("NN",NN);
-
+                intent.putExtra("NO",NO);
                 startActivityForResult(intent,0);
                 createList();
             }
@@ -75,6 +72,8 @@ public class CaptionBoard extends Fragment  {
                 createList();
             }
         });
+
+
         createList();
 
         Spinner cblangspinner=(Spinner)rootview.findViewById(R.id.cblanguagespinner);
@@ -90,6 +89,7 @@ public class CaptionBoard extends Fragment  {
                 selectedlanguage=parent.getItemAtPosition(0).toString();
             }
         });
+
         Spinner cbcontentspinner=(Spinner)rootview.findViewById(R.id.cbcontentsspinner);
         cbcontentspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -117,6 +117,8 @@ public class CaptionBoard extends Fragment  {
                 selectedstatus=parent.getItemAtPosition(0).toString();
             }
         });
+
+
         return rootview;
         }
         @Override
@@ -128,10 +130,10 @@ public class CaptionBoard extends Fragment  {
                 }
             }
         }
+
         public void  createList() {
             ScrollView scroll = (ScrollView) rootview.findViewById(R.id.scroll);
             final LinearLayout list = (LinearLayout) scroll.findViewById(R.id.list);
-            list.removeAllViews();
             RetrofitConnection retrofitConnection = new RetrofitConnection();
             Call<List<SubBoard>> call =  retrofitConnection.server.get_SubBoard("json");
             call.enqueue(new Callback<List<SubBoard>>() {
@@ -139,6 +141,7 @@ public class CaptionBoard extends Fragment  {
                 public void onResponse(Call<List<SubBoard>> call, Response<List<SubBoard>> response) {
                     try
                     {
+                        list.removeAllViews();
                         Log.e("succ","게시판 db 불러오기 성공");
                         boardList=response.body();
                         Integer sta=0;
@@ -158,7 +161,6 @@ public class CaptionBoard extends Fragment  {
                             TextView pay = (TextView) newlist.findViewById(R.id.pay);
                             pay.setText("페이 : " + boardList.get(i).tax+"원");
                             TextView status = (TextView) newlist.findViewById(R.id.status);
-                            Log.d("youtubetest", "" + boardList.get(i).status);
                             Integer stn = (Integer)boardList.get(i).status;
                             if(stn==1)
                                 status.setText("접수 필요");
@@ -166,8 +168,6 @@ public class CaptionBoard extends Fragment  {
                                 status.setText("접수 완료");
                             if(stn==3)
                                 status.setText("등록 완료");
-                            //YouTubePlayerView youTubePlayerView = (YouTubePlayerView) newlist.findViewById(R.id.youtubeView);
-                            //youTubePlayerView.play(link, null);
                             final Integer temp = i;
                             newlist.setOnClickListener(new View.OnClickListener(){
                                 public void onClick(View v){

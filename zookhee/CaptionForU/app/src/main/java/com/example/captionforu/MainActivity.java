@@ -29,14 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private Ranking ranking = new Ranking();
     private Event event = new Event();
     private Profile profile = new Profile();
-
+    String ID;
+    String NN;
+    String NO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final String ID = getIntent().getStringExtra("ID");
-        final String NN = getIntent().getStringExtra("NN");
-        final String NO = getIntent().getStringExtra("no");
+        ID = getIntent().getStringExtra("ID");
+        NN = getIntent().getStringExtra("NN");
+        NO = getIntent().getStringExtra("no");
         Bundle Bundle=new Bundle(2);
         Bundle.putString("ID",ID);
         Bundle.putString("NN",NN);
