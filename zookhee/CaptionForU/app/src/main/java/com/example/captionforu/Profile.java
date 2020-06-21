@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.DecimalFormat;
+
 import kr.co.prnd.YouTubePlayerView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,9 +106,12 @@ public class Profile extends Fragment {
                     TextView editRegisterC = (TextView)rootview.findViewById(R.id.registerCount) ;
                     editRegisterC.setText("등록수"+userinfo.getregiseterNum()+"건");
                     TextView editComplete = (TextView)rootview.findViewById(R.id.complete) ;
-                    editComplete.setText(""+userinfo.getratingCompletenss()+" 점");
+                    DecimalFormat format= new DecimalFormat("#.#");
+                    String formatted=format.format(userinfo.getratingCompletenss());
+                    editComplete.setText(""+formatted+" 점");
                     TextView editClarity = (TextView)rootview.findViewById(R.id.clarity) ;
-                    editClarity.setText(""+userinfo.getratingClarity()+" 점");
+                    formatted=format.format(userinfo.getratingClarity());
+                    editClarity.setText(""+formatted+" 점");
 
                     TextView editratingcnt = (TextView)rootview.findViewById(R.id.profileratingcnt) ;
                     editratingcnt.setText(userinfo.getratingCnt()+"회의 평가 평균");

@@ -65,8 +65,6 @@ public class ratePopupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 patchmypoints();
                 patchhispoints();
-                patchhismoney();
-                patchhisrate();
                 patchisrated(subboardno,1);
                 finish();
             }
@@ -125,6 +123,7 @@ public class ratePopupActivity extends AppCompatActivity {
                 try
                 {
                     Log.e("succ","patch point성공");
+                    patchhismoney();
                 }
                 catch (Exception e) {
                     Log.e("fail","patch point실패");
@@ -147,6 +146,7 @@ public class ratePopupActivity extends AppCompatActivity {
                 try
                 {
                     Log.e("succ","patch point성공");
+                    patchhismoney();
                 }
                 catch (Exception e) {
                     Log.e("fail","patch point실패");
@@ -168,6 +168,7 @@ public class ratePopupActivity extends AppCompatActivity {
                 try
                 {
                     Log.e("succ","patch money성공");
+                    patchhisrate();
                 }
                 catch (Exception e) {
                     Log.e("fail","patch money실패");

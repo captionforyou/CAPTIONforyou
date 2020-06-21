@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 initLoadUserList();
             }
         });
+
     }
 
     private void initLoadUserList() {
