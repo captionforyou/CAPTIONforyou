@@ -124,9 +124,9 @@
             android:layout_marginRight="30dp"
             android:layout_marginBottom="50dp"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="@drawable/button_border"
             android:text="확인"
-            android:textColor="@color/white" />
+            android:textColor="@color/maincolor" />
 
     </LinearLayout>
 

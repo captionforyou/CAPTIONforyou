@@ -34,19 +34,19 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
-                android:text="완성도" />
+                android:text="Completeness" />
 
             <RatingBar
                 android:id="@+id/ratingBarForCompleteness"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="30dp"
                 android:layout_weight="1"
                 android:isIndicator="false"
@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/languagetextView"
-                android:layout_width="wrap_content"
+                android:layout_width="95dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
@@ -74,8 +74,8 @@
                 android:id="@+id/ratingBarForClarity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="30dp"
                 android:layout_weight="1"
                 android:isIndicator="false"

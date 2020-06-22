@@ -19,6 +19,10 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
+    @GET("timedtext")
+    Call<ResponseBody> get_caption(@Query("lang") String lang, @Query("v") String id);
+
+
     @GET("userinfos/")
     Call<List<UserInfo>> get_Userinfo(@Query("format") String json);
 
