@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Profilte</string>
-    <string name="selection_home" />
-    <string name="selection_daily_box_office" />
-    <string name="selection_weekly_box_office" />
-</resources>
